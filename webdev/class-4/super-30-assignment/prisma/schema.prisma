@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role{
+  USER
+  SERVICE_PROVIDER
+}
+enum ServiceType{
+  MEDICAL
+HOUSE_HELP
+BEAUTY
+FITNESS
+EDUCATION
+OTHER
+}
+enum AppointmentStatus {
+  BOOKED
+  CANCELLED
+}
+model User{
+   id String @id @default(uuid())
+   name String
+   email String @unique
+   passwordHash String
+   role Role
+   createdAt DateTime @default(now())
+  
+  services Service[]
+appointments Appointment[]
+   @@map("users")
+}
+
+model Service{
+  id String @id @default(uuid())
+  name String
+  type ServiceType
+  durationMinutes Int
+  provierId String
+  createdAt DateTime @default(now())
+  provider User @relation(fields: [provierId],references:[id], onDelete:Cascade )
+  availabilities Availability[]
+  appointments Appointment[]
+  @@map("services")
+}
+model Availability{
+  id String @id @default(ulid())
+   serviceId String
+   dayOfWeek Int
+   startTime String
+   endTime String
+   server Service @relation(fields: [serviceId],references: [id],onDelete: Cascade)
+   @@unique([serviceId,dayOfWeek,startTime,endTime])
+   @@map("availbilities")
+}
+
+model Appointment{
+  id String @id @default(uuid())
+  userId String
+  serviceId String
+  date DateTime
+  startTime String
+  endTime String
+  slotId String @unique
+  status AppointmentStatus @default(BOOKED)
+  createdAt DateTime
+
+  user User @relation(fields: [userId],references: [id])
+  service Service @relation(fields: [serviceId],references: [id])
+
+  @@index([serviceId,date])
+  @@map("appointments")
+}
+
+
+

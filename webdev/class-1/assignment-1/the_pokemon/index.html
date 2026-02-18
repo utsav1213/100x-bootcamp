@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  width: 200px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card img {
+  width: 120px;
+}
+    </style>
+</head>
+<body>
+    <h1>The Pokémon</h1>
+   <div class="controls">
+    <input type="number" id="count" placeholder="Number of Cards" min="1" />
+    
+    <select id="type">
+      <option value="fire">Fire</option>
+      <option value="water">Water</option>
+      <option value="grass">Grass</option>
+      <option value="electric">Electric</option>
+      <option value="psychic">Psychic</option>
+    </select>
+
+    <button onclick="loadPokemon()">Generate</button>
+  </div>
+  <div id="cards" class="card-container"></div>
+  <script src="app.js"></script>
+</body>
+</html>
